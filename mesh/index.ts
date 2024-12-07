@@ -3,7 +3,7 @@ import { MeshContractTx } from "./transactions/tx";
 
 const testTx = async () => {
   const setup = async () => {
-    const address = wallet.getUsedAddresses()[0];
+    const address = (await wallet.getUsedAddresses())[0];
     await provider.fundWallet(address, 1000);
     await sleep(1);
     await tx.prepare();

@@ -5,7 +5,7 @@
   "main": "mesh/index.ts",
   "scripts": {
     "aiken": "cd aiken-workspace && aiken check && aiken build",
-    "test": "npm run aiken && ts-node mesh/index.ts"
+    "dev": "npx tsx mesh/index.ts"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@meshsdk/core": "^1.7",
     "@meshsdk/core-csl": "^1.7",
-    "axios": "^1.7.5"
+    "axios": "^1.7.5",
+    "tsx": "^4.9.4"
   }
 }

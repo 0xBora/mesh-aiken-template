@@ -3,7 +3,6 @@ import {
   AppWalletKeyType,
   YaciProvider,
   MeshTxBuilder,
-  SlotConfig,
 } from "@meshsdk/core";
 import axios from "axios";
 
@@ -54,20 +53,17 @@ export const newWallet = (providedMnemonic?: string[]) => {
 };
 
 export class MeshTx {
-  address: string;
-
-  constructor(public wallet: MeshWallet) {
-    const address = this.wallet.getUsedAddresses()[0];
-    this.address = address;
-  }
+  constructor(public wallet: MeshWallet) {}
 
   newTx = async () => {
+    const address = (await this.wallet.getUsedAddresses())[0];
+
     const txBuilder = new MeshTxBuilder({
       fetcher: provider,
       evaluator: provider,
     });
     const utxos = await this.wallet.getUtxos();
-    txBuilder.changeAddress(this.address).selectUtxosFrom(utxos);
+    txBuilder.changeAddress(address).selectUtxosFrom(utxos);
     return txBuilder;
   };
 
@@ -84,11 +80,13 @@ export class MeshTx {
   };
 
   prepare = async () => {
+    const address = (await this.wallet.getUsedAddresses())[0];
+
     const txBuilder = await this.newTx();
     const txHex = await txBuilder
-      .txOut(this.address, [{ unit: "lovelace", quantity: "5000000" }])
-      .txOut(this.address, [{ unit: "lovelace", quantity: "5000000" }])
-      .txOut(this.address, [{ unit: "lovelace", quantity: "5000000" }])
+      .txOut(address, [{ unit: "lovelace", quantity: "5000000" }])
+      .txOut(address, [{ unit: "lovelace", quantity: "5000000" }])
+      .txOut(address, [{ unit: "lovelace", quantity: "5000000" }])
       .complete();
     const singedTx = this.wallet.signTx(txHex);
     const txHash = await this.wallet.submitTx(singedTx);
