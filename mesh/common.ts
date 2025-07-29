@@ -49,7 +49,7 @@ export const newWallet = (providedMnemonic?: string[]) => {
 };
 
 export class MeshTx {
-  constructor(public wallet: MeshWallet) { }
+  constructor(public wallet: MeshWallet) {}
 
   newTx = async () => {
     const address = (await this.wallet.getUsedAddresses())[0];
